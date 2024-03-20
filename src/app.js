@@ -359,6 +359,9 @@ bot.command(
   })
 );
 
+//TODO: create command to mute all chat
+// bot.telegram.setChatPermissions("",{can_send_messages})
+
 bot.command(
   'automatic',
   Telegraf.admin(async (ctx) => {
@@ -377,13 +380,17 @@ bot.command(
     cron.schedule(
       AUTOMATIC_MESSAGE_DELAY,
       async () => {
-        const dateObject = new Date();
-        const hours = dateObject.getHours();
-        const minutes = dateObject.getMinutes();
-        const seconds = dateObject.getSeconds();
-        const formattedCurrentTime = `${hours}:${minutes}:${seconds}`;
+        const options = {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          timeZone: 'America/Mexico_City',
+        };
+        const currentTime = new Intl.DateTimeFormat('en-EN', options).format(
+          new Date()
+        );
 
-        console.log(`[${formattedCurrentTime}] Enviando mensaje automatico...`);
+        console.log(`[${currentTime}] Enviando mensaje automatico...`);
 
         const rickCoin = await getRickCoin();
         const info = formatCoinInfo(rickCoin);

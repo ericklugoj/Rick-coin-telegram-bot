@@ -1,11 +1,17 @@
 export function formatCoinInfo(coin) {
-  const dollarUSLocale = Intl.NumberFormat('en-US');
+  const dollarUSLocale = Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'usd',
+    maximumFractionDigits: 6,
+    minimumFractionDigits: 2,
+  });
+
   const coinInfo = `
 <b>RICK COIN INFO 🚀</b>
 
-<b>Precio actual:</b> $${dollarUSLocale.format(coin.currentPrice)} USD
-<b>Liquidez:</b> $${dollarUSLocale.format(coin.liquidity)} USD
-<b>Capitalizacion (FDV):</b> $${dollarUSLocale.format(
+<b>Precio actual:</b> ${dollarUSLocale.format(coin.currentPrice)} USD
+<b>Liquidez:</b> ${dollarUSLocale.format(coin.liquidity)} USD
+<b>Capitalizacion (FDV):</b> ${dollarUSLocale.format(
     coin.FullyDilutedValue
   )} USD
 
