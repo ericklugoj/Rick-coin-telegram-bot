@@ -22,6 +22,7 @@ import { getRickCoin } from './services/getRickCoin.js';
 import { AUTOMATIC_MESSAGE_DELAY } from './constants/shared.js';
 import { addHoursToDate } from './utils/addHoursToDate.js';
 import { isAdmin } from './utils/isAdmin.js';
+import { exit } from 'process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -398,7 +399,10 @@ bot.command(
 );
 
 // Init the bot
-bot.launch(() => console.log('Rick Coin BOT ha iniciado correctamente 🚀'));
+bot.launch(() => {
+  console.log('Rick Coin BOT ha iniciado correctamente 🚀');
+  exit();
+});
 
 // Enable graceful stop
 // process.once('SIGINT', () => bot.stop('SIGINT'));
