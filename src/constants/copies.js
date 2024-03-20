@@ -21,24 +21,26 @@ En este grupo: 🚀🔥
 Y recuerden con Rickcoin nos vamos a la luna🚀🚀🔥
 `;
 
-export const LINKS_TEXT = `
-Sitio Oficial: https://rickcrypto.com/
-
-Comprar: https://pancakeswap.finance/swap?outputCurrency=0x7552742DFCCc8D0b13463ec93D259A3D87249a2d
-
-Discord Oficial: https://discord.gg/Tx8PxjHmf4
-
-Grafica: https://www.dextools.io/app/en/bnb/pair-explorer/0xa2bd7c1b03a5de5f96e6152d62ed94d8c14d96f9?t=1710249999275
-
-Contrato: https://bscscan.com/address/0x7552742DFCCc8D0b13463ec93D259A3D87249a2d#code
-
-Auditoria: https://gopluslabs.io/token-security/56/0x7552742dfccc8d0b13463ec93d259a3d87249a2d
-`;
-
 export const HELP_TEXT = `
-Contrato: 0x7552742DFCCc8D0b13463ec93D259A3D87249a2d
+<b>Preguntas Frecuentas</b>
 
-Como Comprar: https://www.youtube.com/watch?v=wxkabZFL768
+<b>¿Cual es el contrato de la moneda?</b> 
+<pre>0x7552742DFCCc8D0b13463ec93D259A3D87249a2d</pre>
+
+<b>¿Porque mis RickCoin no tienen precio en Metamask?</b> 
+Esto es normal ya que aún no se ha actualizado la información en la wallet de Metamask
+
+<b>¿Como puedo comprar RickCoin?</b>
+En esta <a href="https://www.youtube.com/watch?v=00k7yU7_oT0">Guia</a> te enseñamos paso a paso.
+
+<b>¿RickCoin es confiable??</b>
+Si, ya que se encuentra en una red descentralizada y los administradores han renunciado al contrato, lo que significa que no pueden manipular la moneda. Ademas de esto puedes revisar el resultado de nuestra auditoria <a href="https://gopluslabs.io/token-security/56/0x7552742dfccc8d0b13463ec93d259a3d87249a2d">Aqui</a>
+
+<b>¿Porque no puedo ver/comprar RickCoin en Binance (u otras plataformas)?</b>
+Por el momento solo puedes comprar RickCoin a traves de <a href="https://pancakeswap.finance/swap?outputCurrency=0x7552742DFCCc8D0b13463ec93D259A3D87249a2d">PancakeSwap</a> los administradores se encuentran trabajando para listar en otros CEX.
+
+<b>¿Porque hay varias RickCoin listados en otros sitios?</b>
+La unica moneda oficial es Rick Coin de la red BNB y con el logo RK
 `;
 
 export const COMMANDS_TEXT = `

@@ -20,6 +20,8 @@ import {
 } from './utils/bannedUsers.js';
 import { getRickCoin } from './services/getRickCoin.js';
 import { AUTOMATIC_MESSAGE_DELAY } from './constants/shared.js';
+import { addHoursToDate } from './utils/addHoursToDate.js';
+import { isAdmin } from './utils/isAdmin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,6 +38,8 @@ const rulesImagePath = path.resolve(
 );
 
 const bot = new Telegraf(process.env.TELEGRAF_TOKEN);
+
+const chatsIdWithActiveAutomaticMessage = [];
 
 // Configure all commands to autocomplete in chat
 bot.telegram.setMyCommands([
@@ -67,6 +71,18 @@ bot.telegram.setMyCommands([
     command: COMMANDS.UNBAN,
     description: 'Quitar baneo de un usuario',
   },
+  {
+    command: COMMANDS.MUTE,
+    description: 'Silenciar a un usuario',
+  },
+  {
+    command: COMMANDS.UNMUTE,
+    description: 'Quitar silencio de un usuario',
+  },
+  // {
+  //   command: COMMANDS.AUTOMATIC,
+  //   description: 'Activar/desactivar mensaje automatico',
+  // },
 ]);
 
 bot.use(Telegraf.admin(session()));
@@ -77,7 +93,10 @@ bot.on(message('new_chat_members'), (ctx) => {
   const userName = ctx.from.username;
   const displayName = userName || firstName;
 
-  ctx.reply(`Hola ${displayName}! ${WELCOME_TEXT}`);
+  // avoid reply when new bot join chat
+  if (ctx.from.is_bot) return;
+
+  ctx.reply(`Hola @${displayName}! ${WELCOME_TEXT}`);
 });
 
 // handle all commands
@@ -185,16 +204,29 @@ bot.command(
 bot.command(
   COMMANDS.BAN,
   Telegraf.admin(async (ctx) => {
+    // validate if is not reply message
+    if (!ctx.message.reply_to_message?.from?.id) {
+      ctx.reply('Debe hacer reply sobre el usuario a banear');
+      return;
+    }
+
+    const isAdminUser = await isAdmin(
+      ctx.chat.id,
+      ctx.message.reply_to_message.from.id,
+      ctx
+    );
+
+    // validate if user to ban is admin
+    if (isAdminUser) {
+      ctx.reply('No puedo expulsar a un administrador del chat');
+      return;
+    }
+
     const userName = ctx.message.reply_to_message.from.username;
     const firstName = ctx.message.reply_to_message.from.first_name;
     const userId = ctx.message.reply_to_message.from.id;
     const chatId = ctx.chat.id;
     const displayName = userName || firstName;
-
-    if (!userId) {
-      ctx.reply('Debe hacer reply sobre el usuario a banear');
-      return;
-    }
 
     saveBannedUser(ctx.message.reply_to_message.from);
 
@@ -205,8 +237,8 @@ bot.command(
 
 bot.command(
   COMMANDS.UNBAN,
-  Telegraf.admin((ctx) => {
-    const [_, firstName] = ctx.message.text.split(' ');
+  Telegraf.admin(async (ctx) => {
+    const [, firstName] = ctx.message.text.split(' ');
     const chatId = ctx.chat.id;
 
     if (!firstName) {
@@ -223,34 +255,152 @@ bot.command(
       return;
     }
 
+    const isAdminUser = await isAdmin(chatId, user.id, ctx);
+
+    // validate if user to ban is admin
+    if (isAdminUser) {
+      ctx.reply('No puedo quitar el ban a un administrador del chat');
+      return;
+    }
+
     bot.telegram.unbanChatMember(chatId, user.id, { only_if_banned: true });
     ctx.reply(`Se ha quitado el ban del usuario @${firstName}`);
   })
 );
 
+bot.command(
+  COMMANDS.MUTE,
+  Telegraf.admin(async (ctx) => {
+    // validate if is not reply message
+    if (!ctx.message.reply_to_message?.from?.id) {
+      ctx.reply('Debe hacer reply sobre el usuario a silenciar');
+      return;
+    }
+
+    const isAdminUser = await isAdmin(
+      ctx.chat.id,
+      ctx.message.reply_to_message.from.id,
+      ctx
+    );
+
+    // validate if user to ban is admin
+    if (isAdminUser) {
+      ctx.reply('No puedo silenciar a un administrador del chat');
+      return;
+    }
+
+    const [, timeCommand] = ctx.message.text.split(' ');
+
+    if (!timeCommand) {
+      ctx.reply(`Agregue las horas del silencio /${COMMANDS.MUTE} 1h`);
+      return;
+    }
+
+    const hoursToMute = timeCommand.replace(/\D/g, '');
+    const unmuteDate = addHoursToDate(Number(hoursToMute));
+
+    const userName = ctx.message.reply_to_message.from.username;
+    const firstName = ctx.message.reply_to_message.from.first_name;
+    const userId = ctx.message.reply_to_message.from.id;
+    const chatId = ctx.chat.id;
+    const displayName = userName || firstName;
+
+    bot.telegram.restrictChatMember(chatId, userId, {
+      can_send_messages: false,
+      can_send_media_messages: false,
+      can_send_other_messages: false,
+      can_add_web_page_previews: false,
+      use_independent_chat_permissions: false,
+      until_date: unmuteDate,
+    });
+
+    ctx.reply(
+      `El usuario @${displayName} ha sido silenciado ${hoursToMute} horas`
+    );
+  })
+);
+
+bot.command(
+  COMMANDS.UNMUTE,
+  Telegraf.admin(async (ctx) => {
+    // validate if is not reply message
+    if (!ctx.message.reply_to_message?.from?.id) {
+      ctx.reply('Debe hacer reply sobre el usuario a desmutear');
+      return;
+    }
+
+    const isAdminUser = await isAdmin(
+      ctx.chat.id,
+      ctx.message.reply_to_message.from.id,
+      ctx
+    );
+
+    // validate if user to ban is admin
+    if (isAdminUser) {
+      ctx.reply('No puedo quitar el silencio a un administrador del chat');
+      return;
+    }
+
+    const userName = ctx.message.reply_to_message.from.username;
+    const firstName = ctx.message.reply_to_message.from.first_name;
+    const userId = ctx.message.reply_to_message.from.id;
+    const chatId = ctx.chat.id;
+    const displayName = userName || firstName;
+
+    bot.telegram.restrictChatMember(chatId, userId, {
+      can_send_messages: true,
+      can_send_media_messages: true,
+      can_send_other_messages: true,
+      can_add_web_page_previews: true,
+      use_independent_chat_permissions: false,
+    });
+
+    ctx.reply(`El usuario @${displayName} ya no esta silenciado`);
+  })
+);
+
+bot.command(
+  'automatic',
+  Telegraf.admin(async (ctx) => {
+    const chatId = ctx.chat.id;
+    const isCurrentlyActive = chatsIdWithActiveAutomaticMessage.some(
+      (id) => chatId === id
+    );
+
+    if (isCurrentlyActive) {
+      ctx.reply(`El mensaje automatico ya se encuentra activado`);
+      return;
+    }
+
+    chatsIdWithActiveAutomaticMessage.push(chatId);
+
+    cron.schedule(
+      AUTOMATIC_MESSAGE_DELAY,
+      async () => {
+        const dateObject = new Date();
+        const hours = dateObject.getHours();
+        const minutes = dateObject.getMinutes();
+        const seconds = dateObject.getSeconds();
+        const formattedCurrentTime = `${hours}:${minutes}:${seconds}`;
+
+        console.log(`[${formattedCurrentTime}] Enviando mensaje automatico...`);
+
+        const rickCoin = await getRickCoin();
+        const info = formatCoinInfo(rickCoin);
+
+        bot.telegram.sendMessage(chatId, info, {
+          parse_mode: 'html',
+        });
+      },
+      { runOnInit: true }
+    );
+  })
+);
+
 // Init the bot
 bot
-  .launch(console.log('Rick Coin BOT ha iniciado correctamente 🚀'))
+  .launch(() => console.log('Rick Coin BOT ha iniciado correctamente 🚀'))
   .catch(() => console.error('Ocurrio un error al tratar de iniciar el bot'));
-
-// cron.schedule(AUTOMATIC_MESSAGE_DELAY, async () => {
-//   const dateObject = new Date();
-//   const hours = dateObject.getHours();
-//   const minutes = dateObject.getMinutes();
-//   const seconds = dateObject.getSeconds();
-//   const formattedCurrentTime = `${hours}:${minutes}:${seconds}`;
-
-//   console.log(`[${formattedCurrentTime}] Enviando mensaje automatico...`);
-
-//   const groupId = '-1002059711560';
-
-//   const rickCoin = await getRickCoin();
-//   const info = formatCoinInfo(rickCoin);
-
-//   bot.telegram.sendMessage(groupId, info, {
-//     parse_mode: 'html',
-//   });
-// });
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));

@@ -4,6 +4,10 @@ export const COMMANDS = {
   RULES: 'reglas',
   HELP: 'ayuda',
   SHOW_COMMANDS: 'comandos',
-  BAN: 'banear',
+  BAN: 'ban',
   UNBAN: 'unban',
+  MUTE: 'mute',
+  UNMUTE: 'unmute',
+  // MUTE_ALL: 'muteall',
+  // UNMUTE_ALL: 'unmuteall',
 };
