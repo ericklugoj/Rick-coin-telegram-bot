@@ -398,10 +398,8 @@ bot.command(
 );
 
 // Init the bot
-bot
-  .launch(() => console.log('Rick Coin BOT ha iniciado correctamente 🚀'))
-  .catch(() => console.error('Ocurrio un error al tratar de iniciar el bot'));
+bot.launch(() => console.log('Rick Coin BOT ha iniciado correctamente 🚀'));
 
 // Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+// process.once('SIGINT', () => bot.stop('SIGINT'));
+// process.once('SIGTERM', () => bot.stop('SIGTERM'));
