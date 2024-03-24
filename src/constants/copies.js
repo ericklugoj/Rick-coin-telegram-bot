@@ -58,3 +58,20 @@ export const NO_COMMAND_PERMISSION_TEXT = `
 ⚠️ Solos los administradores pueden ejecutar comandos en este chat. ⚠️
 
 por favor no lo intentes de nuevo, de lo contrario podrias ser banneado del chat`;
+
+export const AUTOMATIC_MESSAGE_1 = `
+❗️ INFORMACIÓN IMPORTANTE ❗️
+
+1. NADIE del equipo te escribirá primero.
+2. NADIE del equipo te pedirá que ingreses a links sospechosos.
+3. NADIE del equipo te pedirá tus frases secretas
+4. Si alguien te escribe haciéndose pasar por el equipo, repórtalo inmediatamente.
+`;
+
+export const AUTOMATIC_MESSAGE_2 = `
+❗️ IMPORTANTE ❗️
+
+Ahora será más fácil compartir los links relevantes del ecosistema $RICK, puedes utilizarlos en las redes sociales y comentarios, así se maximiza la información del token sin tanta desinformación. 
+
+https://rickcrypto.com/info/
+`;

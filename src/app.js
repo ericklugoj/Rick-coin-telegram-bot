@@ -7,6 +7,8 @@ import cron from 'node-cron';
 
 import { COMMANDS } from './constants/commands.js';
 import {
+  AUTOMATIC_MESSAGE_1,
+  AUTOMATIC_MESSAGE_2,
   COMMANDS_TEXT,
   HELP_TEXT,
   RULES_TEXT,
@@ -19,7 +21,11 @@ import {
   getBannedUserByFirstName,
 } from './utils/bannedUsers.js';
 import { getRickCoin } from './services/getRickCoin.js';
-import { AUTOMATIC_MESSAGE_DELAY } from './constants/shared.js';
+import {
+  AUTOMATIC_MESSAGE_1_DELAY,
+  AUTOMATIC_MESSAGE_2_DELAY,
+  AUTOMATIC_MESSAGE_INFO_DELAY,
+} from './constants/shared.js';
 import { addHoursToDate } from './utils/addHoursToDate.js';
 import { isAdmin } from './utils/isAdmin.js';
 
@@ -371,31 +377,64 @@ bot.command(
     );
 
     if (isCurrentlyActive) {
-      ctx.reply(`El mensaje automatico ya se encuentra activado`);
+      ctx.reply(`Los mensajes automaticos ya se encuentran activados`);
       return;
     }
 
     chatsIdWithActiveAutomaticMessage.push(chatId);
 
-    cron.schedule(
-      AUTOMATIC_MESSAGE_DELAY,
-      async () => {
-        const options = {
-          hour: 'numeric',
-          minute: 'numeric',
-          second: 'numeric',
-          timeZone: 'America/Mexico_City',
-        };
-        const currentTime = new Intl.DateTimeFormat('en-EN', options).format(
-          new Date()
-        );
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZone: 'America/Mexico_City',
+    };
+    const currentTime = new Intl.DateTimeFormat('en-EN', options).format(
+      new Date()
+    );
 
-        console.log(`[${currentTime}] Enviando mensaje automatico...`);
+    // Currency info message
+    cron.schedule(
+      AUTOMATIC_MESSAGE_INFO_DELAY,
+      async () => {
+        console.log(
+          `[${currentTime}] (COIN INFO): Enviando mensaje automatico...`
+        );
 
         const rickCoin = await getRickCoin();
         const info = formatCoinInfo(rickCoin);
 
         bot.telegram.sendMessage(chatId, info, {
+          parse_mode: 'html',
+        });
+      },
+      { runOnInit: true }
+    );
+
+    // Automatic message 1
+    cron.schedule(
+      AUTOMATIC_MESSAGE_1_DELAY,
+      async () => {
+        console.log(
+          `[${currentTime}] (MESSAGE 1): Enviando mensaje automatico...`
+        );
+
+        bot.telegram.sendMessage(chatId, AUTOMATIC_MESSAGE_1, {
+          parse_mode: 'html',
+        });
+      },
+      { runOnInit: true }
+    );
+
+    // Automatic message 2
+    cron.schedule(
+      AUTOMATIC_MESSAGE_2_DELAY,
+      async () => {
+        console.log(
+          `[${currentTime}] (MESSAGE 2): Enviando mensaje automatico...`
+        );
+
+        bot.telegram.sendMessage(chatId, AUTOMATIC_MESSAGE_2, {
           parse_mode: 'html',
         });
       },
