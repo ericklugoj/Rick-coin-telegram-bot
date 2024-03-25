@@ -8,6 +8,6 @@ export const COMMANDS = {
   UNBAN: 'unban',
   MUTE: 'mute',
   UNMUTE: 'unmute',
-  // MUTE_ALL: 'muteall',
-  // UNMUTE_ALL: 'unmuteall',
+  MUTE_ALL: 'muteall',
+  UNMUTE_ALL: 'unmuteall',
 };

@@ -85,6 +85,14 @@ bot.telegram.setMyCommands([
     command: COMMANDS.UNMUTE,
     description: 'Quitar silencio de un usuario',
   },
+  {
+    command: COMMANDS.MUTE_ALL,
+    description: 'Silenciar a un usuario',
+  },
+  {
+    command: COMMANDS.UNMUTE_ALL,
+    description: 'Quitar silencio de un usuario',
+  },
   // {
   //   command: COMMANDS.AUTOMATIC,
   //   description: 'Activar/desactivar mensaje automatico',
@@ -365,8 +373,39 @@ bot.command(
   })
 );
 
-//TODO: create command to mute all chat
-// bot.telegram.setChatPermissions("",{can_send_messages})
+bot.command(
+  COMMANDS.MUTE_ALL,
+  Telegraf.admin(async (ctx) => {
+    const chatId = ctx.chat.id;
+
+    bot.telegram.setChatPermissions(chatId, {
+      can_send_messages: false,
+      can_send_media_messages: false,
+      can_send_other_messages: false,
+      can_add_web_page_previews: false,
+      use_independent_chat_permissions: false,
+    });
+
+    ctx.reply(`Se ha silenciado el chat`);
+  })
+);
+
+bot.command(
+  COMMANDS.UNMUTE_ALL,
+  Telegraf.admin(async (ctx) => {
+    const chatId = ctx.chat.id;
+
+    bot.telegram.setChatPermissions(chatId, {
+      can_send_messages: true,
+      can_send_media_messages: true,
+      can_send_other_messages: true,
+      can_add_web_page_previews: true,
+      use_independent_chat_permissions: false,
+    });
+
+    ctx.reply(`Se ha quitado el silencio del chat`);
+  })
+);
 
 bot.command(
   'automatic',
