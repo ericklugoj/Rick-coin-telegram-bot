@@ -106,7 +106,12 @@ bot.use(Telegraf.admin(session()));
 
 // Chat filter middleware
 bot.use(async (ctx, next) => {
-  const isAdminUser = await isAdmin(ctx.chat.id, ctx.message.from.id, ctx);
+  if (!ctx.from || !ctx.chat || !ctx.text) {
+    await next();
+    return;
+  }
+
+  const isAdminUser = await isAdmin(ctx.chat.id, ctx.from.id, ctx);
 
   if (ctx.from.is_bot || isAdminUser) {
     await next();
@@ -118,9 +123,9 @@ bot.use(async (ctx, next) => {
   const firstName = ctx.from.first_name;
   const userName = ctx.from.username;
   const displayName = userName || firstName;
-  const messageText = ctx.message?.text;
+  const messageText = ctx.text;
 
-  if (!messageText) {
+  if (!messageText || !userId) {
     await next();
     return;
   }
@@ -485,14 +490,15 @@ bot.command(
       second: 'numeric',
       timeZone: 'America/Mexico_City',
     };
-    const currentTime = new Intl.DateTimeFormat('en-EN', options).format(
-      new Date()
-    );
 
     // Currency info message
     cron.schedule(
       AUTOMATIC_MESSAGE_INFO_DELAY,
       async () => {
+        const currentTime = new Intl.DateTimeFormat('en-EN', options).format(
+          new Date()
+        );
+
         console.log(
           `[${currentTime}] (COIN INFO): Enviando mensaje automatico...`
         );
@@ -511,6 +517,10 @@ bot.command(
     cron.schedule(
       AUTOMATIC_MESSAGE_TEXT_DELAY,
       async () => {
+        const currentTime = new Intl.DateTimeFormat('en-EN', options).format(
+          new Date()
+        );
+
         console.log(
           `[${currentTime}] (MESSAGE 1): Enviando mensaje automatico...`
         );
@@ -526,6 +536,9 @@ bot.command(
     cron.schedule(
       AUTOMATIC_MESSAGE_TEXT_DELAY,
       async () => {
+        const currentTime = new Intl.DateTimeFormat('en-EN', options).format(
+          new Date()
+        );
         console.log(
           `[${currentTime}] (MESSAGE 2): Enviando mensaje automatico...`
         );
@@ -543,7 +556,18 @@ bot.command(
 bot.launch(() => console.log('Rick Coin BOT ha iniciado correctamente 🚀'));
 
 // Catch any error from telegram
-bot.catch((e) => console.error(`Ocurrio un error inesperado... \n${e}`));
+bot.catch((e) => {
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZone: 'America/Mexico_City',
+  };
+  const currentTime = new Intl.DateTimeFormat('en-EN', options).format(
+    new Date()
+  );
+  console.error(`[${currentTime}] ${e}`);
+});
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
