@@ -28,6 +28,7 @@ import {
 import { addHoursToDate } from './utils/addHoursToDate.js';
 import { isAdmin } from './utils/isAdmin.js';
 import { validateMessage } from './utils/validateMessage.js';
+import { validateUserName } from './utils/validateUserName.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -134,12 +135,27 @@ bot.use(async (ctx, next) => {
 
 // Listen for new chat members
 bot.on(message('new_chat_members'), async (ctx) => {
+  const chatId = ctx.chat.id;
+  const userId = ctx.from.id;
   const firstName = ctx.from.first_name;
   const userName = ctx.from.username;
   const displayName = userName || firstName;
 
   // avoid reply when new bot join chat
   if (ctx.from.is_bot) return;
+
+  const isValidFirstName = validateUserName(firstName);
+  const isValidDisplayName = validateUserName(displayName);
+
+  if (!isValidFirstName || !isValidDisplayName) {
+    saveBannedUser(ctx.from);
+    await bot.telegram.banChatMember(chatId, userId);
+    await ctx.reply(
+      `El nuevo usuario @${displayName} ha sido expulsado automaticamente porque se identificó como un bot`
+    );
+
+    return;
+  }
 
   await ctx.reply(`Hola @${displayName}! ${WELCOME_TEXT}`);
 });
