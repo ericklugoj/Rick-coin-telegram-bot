@@ -106,15 +106,21 @@ bot.use(Telegraf.admin(session()));
 
 // Chat filter middleware
 bot.use(async (ctx, next) => {
+  const isAdminUser = await isAdmin(ctx.chat.id, ctx.message.from.id, ctx);
+
+  if (ctx.from.is_bot || isAdminUser) {
+    await next();
+    return;
+  }
+
   const chatId = ctx.chat.id;
   const userId = ctx.from.id;
   const firstName = ctx.from.first_name;
   const userName = ctx.from.username;
   const displayName = userName || firstName;
-  const messageText = ctx.message.text;
-  const isAdminUser = await isAdmin(ctx.chat.id, ctx.message.from.id, ctx);
+  const messageText = ctx.message?.text;
 
-  if (!messageText || isAdminUser) {
+  if (!messageText) {
     await next();
     return;
   }
@@ -299,7 +305,7 @@ bot.command(
 bot.command(
   COMMANDS.UNBAN,
   Telegraf.admin(async (ctx) => {
-    const [, firstName] = ctx.message.text.split(' ');
+    const [, firstName] = ctx.message?.text?.split(' ');
     const chatId = ctx.chat.id;
 
     if (!firstName) {
@@ -352,7 +358,7 @@ bot.command(
       return;
     }
 
-    const [, timeCommand] = ctx.message.text.split(' ');
+    const [, timeCommand] = ctx.message?.text?.split(' ');
 
     if (!timeCommand) {
       await ctx.reply(`Agregue las horas del silencio /${COMMANDS.MUTE} 1h`);
