@@ -13,7 +13,7 @@ En este grupo: 🚀🔥
 
 ➡️ Se pide respeto por los administradores y todos los integrantes del grupo.
 
-➡️ Habrán llamadas de atencion, si se llegam a reiterar se recurrira al ban permanente del grupo.
+➡️ Habrán llamadas de atencion, si se llegan a reiterar se recurrira al ban permanente del grupo.
 
 ➡️ Se prohíben prácticas desleales que incentiven a la venta para aprovecharse de los miembros de la comunidad comprando barato.
 
@@ -49,9 +49,13 @@ Lista de comandos disponibles 🕹️
 
 export const WELCOME_TEXT = `
 
-Bienvenido a nuestra comunidad.🚀🚀
+Bienvenido a Rick Community 🚀
 
-Recuerda pedir a un administrador las reglas.
+Recuerda pedir a un Administrador las reglas de la comunidad.
+
+@Rickcoinsupport
+@Summerrcn
+@Jaguarrick
 `;
 
 export const NO_COMMAND_PERMISSION_TEXT = `
@@ -62,10 +66,20 @@ por favor no lo intentes de nuevo, de lo contrario podrias ser banneado del chat
 export const AUTOMATIC_MESSAGE_1 = `
 ❗️ INFORMACIÓN IMPORTANTE ❗️
 
-1. NADIE del equipo te escribirá primero.
-2. NADIE del equipo te pedirá que ingreses a links sospechosos.
-3. NADIE del equipo te pedirá tus frases secretas
-4. Si alguien te escribe haciéndose pasar por el equipo, repórtalo inmediatamente.
+El manejar cryptos se tiene que tener responsabilidades de cara a la seguridad. 
+
+🔒 NADIE del equipo te escribirá primero.
+🔒 NADIE del equipo te pedirá que ingreses a links sospechosos.
+🔒 NO LE ENVÍES A NADIE TU FRASE SEMILLA. 
+🔒 NO LE ENVÍES A NADIE TUS TOKEN AUNQUE SEA O SE HAGA PASAR POR PARTE DEL EQUIPO. 
+
+Es responsabilidad de cada inversor manejar sus Wallet, no nos hacemos responsables si ya se a reiterado mucho veces esta información.
+
+Si alguien te escribe haciéndose pasar por el equipo o bien un miembro pidiendo tus token, repórtalo inmediatamente a: 
+
+@jaguarrick
+@summerrcn
+@Rickcoinsupport
 `;
 
 export const AUTOMATIC_MESSAGE_2 = `

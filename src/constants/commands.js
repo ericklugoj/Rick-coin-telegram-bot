@@ -10,4 +10,5 @@ export const COMMANDS = {
   UNMUTE: 'unmute',
   MUTE_ALL: 'muteall',
   UNMUTE_ALL: 'unmuteall',
+  AUTOMATIC: 'automatic',
 };

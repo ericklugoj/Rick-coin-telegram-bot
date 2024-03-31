@@ -22,12 +22,12 @@ import {
 } from './utils/bannedUsers.js';
 import { getRickCoin } from './services/getRickCoin.js';
 import {
-  AUTOMATIC_MESSAGE_1_DELAY,
-  AUTOMATIC_MESSAGE_2_DELAY,
+  AUTOMATIC_MESSAGE_TEXT_DELAY,
   AUTOMATIC_MESSAGE_INFO_DELAY,
 } from './constants/shared.js';
 import { addHoursToDate } from './utils/addHoursToDate.js';
 import { isAdmin } from './utils/isAdmin.js';
+import { validateMessage } from './utils/validateMessage.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,6 +45,7 @@ const rulesImagePath = path.resolve(
 
 const bot = new Telegraf(process.env.TELEGRAF_TOKEN);
 
+// Cache for active automatic messages
 const chatsIdWithActiveAutomaticMessage = [];
 
 // Configure all commands to autocomplete in chat
@@ -93,15 +94,45 @@ bot.telegram.setMyCommands([
     command: COMMANDS.UNMUTE_ALL,
     description: 'Quitar silencio de un usuario',
   },
-  // {
-  //   command: COMMANDS.AUTOMATIC,
-  //   description: 'Activar/desactivar mensaje automatico',
-  // },
+  {
+    command: COMMANDS.AUTOMATIC,
+    description: 'Activar mensaje automatico',
+  },
 ]);
 
+// Admin session middleware
 bot.use(Telegraf.admin(session()));
 
-// Listen for messages
+// Chat filter middleware
+bot.use(async (ctx, next) => {
+  const chatId = ctx.chat.id;
+  const userId = ctx.from.id;
+  const firstName = ctx.from.first_name;
+  const userName = ctx.from.username;
+  const displayName = userName || firstName;
+  const messageText = ctx.message.text;
+  const isAdminUser = await isAdmin(ctx.chat.id, ctx.message.from.id, ctx);
+
+  if (!messageText || isAdminUser) {
+    await next();
+    return;
+  }
+
+  const isValidMessageText = validateMessage(messageText);
+
+  if (!isValidMessageText) {
+    await ctx.deleteMessage();
+    saveBannedUser(ctx.from);
+    await bot.telegram.banChatMember(chatId, userId);
+    await ctx.reply(
+      `El usuario @${displayName} a sido expulsado por mal comportamiento`
+    );
+  }
+
+  await next();
+});
+
+// Listen for new chat members
 bot.on(message('new_chat_members'), (ctx) => {
   const firstName = ctx.from.first_name;
   const userName = ctx.from.username;
@@ -452,7 +483,7 @@ bot.command(
 
     // Automatic message 1
     cron.schedule(
-      AUTOMATIC_MESSAGE_1_DELAY,
+      AUTOMATIC_MESSAGE_TEXT_DELAY,
       async () => {
         console.log(
           `[${currentTime}] (MESSAGE 1): Enviando mensaje automatico...`
@@ -467,7 +498,7 @@ bot.command(
 
     // Automatic message 2
     cron.schedule(
-      AUTOMATIC_MESSAGE_2_DELAY,
+      AUTOMATIC_MESSAGE_TEXT_DELAY,
       async () => {
         console.log(
           `[${currentTime}] (MESSAGE 2): Enviando mensaje automatico...`
@@ -483,9 +514,10 @@ bot.command(
 );
 
 // Init the bot
-bot
-  .launch(() => console.log('Rick Coin BOT ha iniciado correctamente 🚀'))
-  .catch(() => console.error('Ocurrio un error al tratar de iniciar el bot'));
+bot.launch(() => console.log('Rick Coin BOT ha iniciado correctamente 🚀'));
+
+// Catch any error from telegram
+bot.catch((e) => console.error(`Ocurrio un error inesperado... \n${e}`));
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
