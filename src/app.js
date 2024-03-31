@@ -133,7 +133,7 @@ bot.use(async (ctx, next) => {
   const isValidMessageText = validateMessage(messageText);
 
   if (!isValidMessageText) {
-    await ctx.deleteMessage();
+    await ctx.deleteMessage(ctx.message.message_id);
     saveBannedUser(ctx.from);
     await bot.telegram.banChatMember(chatId, userId);
     await ctx.reply(
