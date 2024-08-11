@@ -7,20 +7,15 @@ export function formatCoinInfo(coin) {
   });
 
   const coinInfo = `
-<b>RICK COIN INFO 🚀</b>
+<b>$RICKCOIN PRICE INFO 🔥📊</b>
 
 <b>Precio actual:</b> ${dollarUSLocale.format(coin.currentPrice)} USD
-<b>Liquidez:</b> ${dollarUSLocale.format(coin.liquidity)} USD
-<b>Capitalizacion (FDV):</b> ${dollarUSLocale.format(
-    coin.FullyDilutedValue
-  )} USD
 
-<b>Transacciones en la ultima hora:</b>
+<b>Capitalizacion:</b> ${dollarUSLocale.format(coin.FullyDilutedValue)} USD
 
-<b>Compras:</b> ${coin.lastHour.buys}
-<b>Ventas:</b> ${coin.lastHour.sells}
-<b>Volumen:</b> ${dollarUSLocale.format(coin.lastHour.volume)} USD
-<b>El precio cambió:</b> ${coin.lastHour.priceChange}%
+<b>Volumen 1H:</b> ${dollarUSLocale.format(coin.lastHour.volume)} USD
+  
+<a href="https://dexscreener.com/bsc/0xA2bD7C1b03a5DE5F96e6152D62eD94d8c14D96f9">Ir a la grafica</a>
   `;
 
   return coinInfo;

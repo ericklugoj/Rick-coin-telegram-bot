@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Telegraf, session } from 'telegraf';
+import { Input, Telegraf, session } from 'telegraf';
 import { message } from 'telegraf/filters';
 import cron from 'node-cron';
 
@@ -9,7 +9,9 @@ import { COMMANDS } from './constants/commands.js';
 import {
   AUTOMATIC_MESSAGE_1,
   AUTOMATIC_MESSAGE_2,
+  BITGET_TEXT,
   COMMANDS_TEXT,
+  CREATE_TO_EARN_TEXT,
   HELP_TEXT,
   RULES_TEXT,
   WELCOME_TEXT,
@@ -24,6 +26,7 @@ import { getRickCoin } from './services/getRickCoin.js';
 import {
   AUTOMATIC_MESSAGE_TEXT_DELAY,
   AUTOMATIC_MESSAGE_INFO_DELAY,
+  DEXSCREENER_GRAPH_URL,
 } from './constants/shared.js';
 import { addHoursToDate } from './utils/addHoursToDate.js';
 import { isAdmin } from './utils/isAdmin.js';
@@ -33,15 +36,14 @@ import { validateUserName } from './utils/validateUserName.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const infoImagePath = path.resolve(__dirname, './assets/images/info_image.JPG');
-const helpImagePath = path.resolve(__dirname, './assets/images/help_image.JPG');
+const helpImagePath = path.resolve(__dirname, './assets/images/help_image.jpg');
 const linksImagePath = path.resolve(
   __dirname,
-  './assets/images/links_image.JPG'
+  './assets/images/links_image.jpg'
 );
 const rulesImagePath = path.resolve(
   __dirname,
-  './assets/images/rules_image.JPG'
+  './assets/images/rules_image.jpg'
 );
 
 const bot = new Telegraf(process.env.TELEGRAF_TOKEN);
@@ -89,15 +91,23 @@ await bot.telegram.setMyCommands([
   },
   {
     command: COMMANDS.MUTE_ALL,
-    description: 'Silenciar a un usuario',
+    description: 'Silenciar a todos los usuarios (no admins)',
   },
   {
     command: COMMANDS.UNMUTE_ALL,
-    description: 'Quitar silencio de un usuario',
+    description: 'Quitar silencio a todos los usuarios',
   },
   {
     command: COMMANDS.AUTOMATIC,
-    description: 'Activar mensaje automatico',
+    description: 'Activar alertas automaticas',
+  },
+  {
+    command: COMMANDS.CREATE_TO_EARN,
+    description: 'Enviar información sobre el evento',
+  },
+  {
+    command: COMMANDS.BITGET,
+    description: 'Enviar información sobre bitget',
   },
 ]);
 
@@ -106,6 +116,7 @@ bot.use(Telegraf.admin(session()));
 
 // Chat filter middleware
 bot.use(async (ctx, next) => {
+  // console.log(ctx.text);
   if (!ctx.from || !ctx.chat || !ctx.text) {
     await next();
     return;
@@ -130,16 +141,16 @@ bot.use(async (ctx, next) => {
     return;
   }
 
-  const isValidMessageText = validateMessage(messageText);
+  // const isValidMessageText = validateMessage(messageText);
 
-  if (!isValidMessageText) {
-    await ctx.deleteMessage(ctx.message.message_id);
-    saveBannedUser(ctx.from);
-    await bot.telegram.banChatMember(chatId, userId);
-    await ctx.reply(
-      `El usuario @${displayName} a sido expulsado por mal comportamiento`
-    );
-  }
+  // if (!isValidMessageText) {
+  //   await ctx.deleteMessage(ctx.message.message_id);
+  //   saveBannedUser(ctx.from);
+  //   await bot.telegram.banChatMember(chatId, userId);
+  //   await ctx.reply(
+  //     `El usuario @${displayName} a sido expulsado por mal comportamiento`
+  //   );
+  // }
 
   await next();
 });
@@ -168,7 +179,7 @@ bot.on(message('new_chat_members'), async (ctx) => {
     return;
   }
 
-  await ctx.reply(`Hola @${displayName}! ${WELCOME_TEXT}`);
+  await ctx.reply(`Welcome🎉 @${displayName}! ${WELCOME_TEXT}`);
 });
 
 // handle all commands
@@ -200,6 +211,20 @@ bot.command(
       },
       { caption: RULES_TEXT, parse_mode: 'HTML' }
     );
+  })
+);
+
+bot.command(
+  COMMANDS.CREATE_TO_EARN,
+  Telegraf.admin(async (ctx) => {
+    await ctx.replyWithHTML(CREATE_TO_EARN_TEXT);
+  })
+);
+
+bot.command(
+  COMMANDS.BITGET,
+  Telegraf.admin(async (ctx) => {
+    await ctx.replyWithHTML(BITGET_TEXT);
   })
 );
 
@@ -237,7 +262,17 @@ bot.command(
             ],
             [
               { text: 'Sitio Oficial 🌐', url: 'https://rickcrypto.com/' },
-              { text: 'Discord 💬', url: 'https://discord.gg/Tx8PxjHmf4' },
+              { text: 'Discord 💬', url: 'https://discord.gg/SN32M7Ye4b' },
+            ],
+            [
+              {
+                text: 'Canal 🇪🇸',
+                url: 'https://t.me/+yQEZfSodj4Y5ODlh',
+              },
+              {
+                text: 'Canal 🇺🇸',
+                url: 'https://t.me/rickcoincrypto2',
+              },
             ],
           ],
         },
@@ -266,7 +301,7 @@ bot.command(
 
     await ctx.replyWithPhoto(
       {
-        source: infoImagePath,
+        url: DEXSCREENER_GRAPH_URL,
       },
       { caption: info, parse_mode: 'HTML' }
     );
@@ -470,7 +505,7 @@ bot.command(
 );
 
 bot.command(
-  'automatic',
+  COMMANDS.AUTOMATIC,
   Telegraf.admin(async (ctx) => {
     const chatId = ctx.chat.id;
     const isCurrentlyActive = chatsIdWithActiveAutomaticMessage.some(
@@ -506,9 +541,12 @@ bot.command(
         const rickCoin = await getRickCoin();
         const info = formatCoinInfo(rickCoin);
 
-        await bot.telegram.sendMessage(chatId, info, {
-          parse_mode: 'html',
-        });
+        await ctx.replyWithPhoto(
+          {
+            url: DEXSCREENER_GRAPH_URL,
+          },
+          { caption: info, parse_mode: 'HTML' }
+        );
       },
       { runOnInit: true }
     );

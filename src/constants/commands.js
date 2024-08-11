@@ -1,8 +1,8 @@
 export const COMMANDS = {
-  INFO: 'info',
-  LINK: 'link',
+  INFO: 'precio',
+  LINK: 'links',
   RULES: 'reglas',
-  HELP: 'ayuda',
+  HELP: 'faqs',
   SHOW_COMMANDS: 'comandos',
   BAN: 'ban',
   UNBAN: 'unban',
@@ -10,5 +10,7 @@ export const COMMANDS = {
   UNMUTE: 'unmute',
   MUTE_ALL: 'muteall',
   UNMUTE_ALL: 'unmuteall',
-  AUTOMATIC: 'automatic',
+  AUTOMATIC: 'alertas',
+  CREATE_TO_EARN: 'createtoearn',
+  BITGET: 'bitget',
 };
