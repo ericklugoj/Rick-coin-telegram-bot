@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Input, Telegraf, session } from 'telegraf';
+import { Telegraf, session } from 'telegraf';
 import { message } from 'telegraf/filters';
 import cron from 'node-cron';
 
@@ -15,7 +15,7 @@ import {
   HELP_TEXT,
   RULES_TEXT,
   WELCOME_TEXT,
-} from './constants/copies.js';
+} from './constants/messages.js';
 import { getCommands } from './utils/getCommands.js';
 import { formatCoinInfo } from './utils/formatCoinInfo.js';
 import {
@@ -30,21 +30,15 @@ import {
 } from './constants/shared.js';
 import { addHoursToDate } from './utils/addHoursToDate.js';
 import { isAdmin } from './utils/isAdmin.js';
-import { validateMessage } from './utils/validateMessage.js';
+// import { validateMessage } from './utils/validateMessage.js';
 import { validateUserName } from './utils/validateUserName.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const helpImagePath = path.resolve(__dirname, './assets/images/help_image.jpg');
-const linksImagePath = path.resolve(
-  __dirname,
-  './assets/images/links_image.jpg'
-);
-const rulesImagePath = path.resolve(
-  __dirname,
-  './assets/images/rules_image.jpg'
-);
+const helpImagePath = path.resolve(__dirname, './assets/images/help.jpg');
+const linksImagePath = path.resolve(__dirname, './assets/images/links.jpg');
+const rulesImagePath = path.resolve(__dirname, './assets/images/rules.jpg');
 
 const bot = new Telegraf(process.env.TELEGRAF_TOKEN);
 
@@ -129,11 +123,11 @@ bot.use(async (ctx, next) => {
     return;
   }
 
-  const chatId = ctx.chat.id;
+  // const chatId = ctx.chat.id;
   const userId = ctx.from.id;
-  const firstName = ctx.from.first_name;
-  const userName = ctx.from.username;
-  const displayName = userName || firstName;
+  // const firstName = ctx.from.first_name;
+  // const userName = ctx.from.username;
+  // const displayName = userName || firstName;
   const messageText = ctx.text;
 
   if (!messageText || !userId) {
