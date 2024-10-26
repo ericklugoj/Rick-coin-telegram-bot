@@ -16,11 +16,12 @@ function transformData(pair) {
     currentPrice: pair.priceUsd,
     liquidity: pair.liquidity.usd,
     FullyDilutedValue: pair.fdv,
-    lastHour: {
-      buys: pair.txns.h1.buys,
-      sells: pair.txns.h1.sells,
-      volume: pair.volume.h1,
-      priceChange: pair.priceChange.h1,
+    marketCap: pair.marketCap,
+    transactions: {
+      buys: pair.txns.h24.buys,
+      sells: pair.txns.h24.sells,
+      volume: pair.volume.h24,
+      priceChange: pair.priceChange.h24,
     },
   };
 

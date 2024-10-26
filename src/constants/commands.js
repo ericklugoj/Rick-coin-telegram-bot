@@ -3,6 +3,7 @@ export const COMMANDS = {
   LINK: 'links',
   RULES: 'reglas',
   HELP: 'faqs',
+  BUY: 'comprar',
   SHOW_COMMANDS: 'comandos',
   BAN: 'ban',
   UNBAN: 'unban',

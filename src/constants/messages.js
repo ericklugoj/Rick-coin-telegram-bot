@@ -1,146 +1,144 @@
-export const RULES_TEXT = `
-⚠️<b>Normas del Grupo</b>⚠️
- 
-<b>En este grupo:</b>
- 
-⚜️Se espera que todos los miembros mantengan un ambiente respetuoso y amigable. 
- 
-⚜️Compartir contenido relevante sobre rickcoin y sus avances.  
- 
-⚜️Se prohíbe el spam, la difusión de contenido inapropiado o fraudulento, así como la violación de la privacidad de los miembros. 
- 
-⚜️Se requiere colaboración o de otro modo se tomará la medida de baneo permanente del grupo. 
- 
-⚜️Se pide respeto para los administradores y todos los integrantes del grupo. 
- 
-⚜️Habrán llamadas de atencion, si se llegan a reiterar se recurrira al ban permanente del grupo. 
- 
-⚜️Se prohíben prácticas desleales que incentiven a la venta para aprovecharse de los miembros de la comunidad comprando barato. 
- 
-  
-Y recuerden con Rickcoin nos vamos a la luna🚀🚀🔥
-`;
+export const RULES_TEXT = `<b>🧛🏻‍♂️ Reglas de la comunidad Rickcoin 🧛🏻‍♂️
 
-export const HELP_TEXT = `
-<b>FAQs ⚠️</b>
-<b>Preguntas Frecuentas</b>
+Para llevar una grata convivencia entre los miembros de la comunidad, sigue estas simples normativas: 
 
-⚜️ <b>¿Cual es el contrato de la moneda?</b> 
+🩸Ser respetuoso con los miembros y staff del grupo 
+
+🩸La libre expresión es parte esencial de la comunidad, puedes hablar de cualquier otro tema! No solo de Rickcoin
+
+🩸Prohibido el spam, la difusión de contenido inapropiado o fraudulento
+
+🩸Bullying/burlas hacia miembros del grupo está completamente sansionado
+
+🩸Está habilitado hablar sobre otras criptomonedas, siempre y cuando no se cruce la línea de promocionar o incentivar a la inversión hacia estas
+
+🩸No incumplir las reglas del grupo mediante DM entre usuarios
+
+🩸Las críticas destructivas/insultos hacia Rickcoin está sancionado. Por otro lado, las críticas constructivas están habilitadas!
+
+🪦 Muchas gracias por la comprensión, y hagamos de este grupo más que una comunidad! 🪦
+</b>`;
+
+export const HELP_TEXT = `<b>👻 Preguntas Frecuentes 👻
+
+😈 Cómo comprar $RICK?
+
+- Puedes comprar a través de Bitget Wallet u Okx Wallet! Descarga la app y empieza a operar!
+
+😈 Dónde puedo ver el precio?
+
+- En dexscreen puedes ver el precio, gráfico y más datos sobre $RICK. <a href="https://dexscreener.com/bsc/0xA2bD7C1b03a5DE5F96e6152D62eD94d8c14D96f9">Pulsa aquí</a> para ver el precio 
+
+😈 Cuál es el contrato del token?
+
+- El contrato es: 
+<pre>0x7552742DFCCc8D0b13463ec93D259A3D87249a2d</pre>
+Otros contratos son imitaciones o estafas!
+
+😈 Dónde puedo ver información del proyecto?
+
+- En el website oficial! <a href="https://rickcrypto.com">Pulsa Aquí</a> para visitar el sitio web y ponerte al día!
+
+😈 Qué es create to earn?
+
+- Rickcoin es pionero en este sistema! Puedes generar ganancias subiendo contenido a redes sociales sobre Rickcoin, acumular visitas y ganar recompensas en USDT, así de sencillo! <a href="https://rickcrypto.com/create-to-earn/">Pulsa aquí</a> para ver más info 
+
+🕷️ Si tienes más dudas/preguntas, puedes comentarlas por el grupo o al staff! 🕷️</b>`;
+
+export const HOW_TO_BUY_TEXT = `<b>🎃 Cómo comprar $RICK? 🎃
+
+🛸 STEP 1: Descarga la app bitget wallet o Okx wallet 
+
+🛸 STEP 2: Crea una cuenta, anota y guarda tu frase semilla. Nunca la compartas con nadie!
+
+🛸 STEP 3: Deposita $BNB en tu wallet. Recuerda enviar algo extra de $BNB para el fees 
+
+🛸 STEP 4: Pulsa en "SWAP", y selecciona para intercambiar $BNB por $RICK. Si no te aparece el token, agrega el siguiente contrato: 
 <pre>0x7552742DFCCc8D0b13463ec93D259A3D87249a2d</pre>
 
-⚜️ <b>¿Porque mis RickCoin no tienen precio en Metamask?</b> 
-<i>Esto se debe que aún no se encuentra listado en CMC/CG. Pero puedes calcular la Tasa de conversión multiplicando la cantidad de Tokens por el precio actual.</i>
+🛸 STEP 5: Selecciona el monto que quieras comprar y confirma la transacción. Y listo! Ya tienes tus tokens $RICK en tu wallet
 
-⚜️ <b>¿Como puedo comprar RickCoin?</b>
-<i>Recomendamos utilizar la Wallet Web3 de Bitget / OKX. puedes acceder directamente haciendo click <a href="https://www.okx.com/es-es/web3/dex-swap?inputChain=56&inputCurrency=0x7552742dfccc8d0b13463ec93d259a3d87249a2d&outputChain=56&outputCurrency=0x55d398326f99059ff775485246999027b3197955">aqui</a></i>
-
-⚜️ <b>¿Dónde puedo encontrar información del proyecto como Whitepaper, Roadmap, Etc?</b>
-<i>Puedes encontrar toda la información actualizada del proyecto y novedades a través del <a href="https://rickcrypto.com/">Website oficial</a> y el Canal de Difusión oficial.</i>
-
-⚜️ <b>¿Donde puedo ver el grafico de Rickcoin?</b>
-<i>Recomendamos utilizar Dexscreener para visualizar el <a href="https://dexscreener.com/bsc/0xA2bD7C1b03a5DE5F96e6152D62eD94d8c14D96f9">grafico</a> y obtener mayor información en tiempo real.</i>
-
-`;
+⚰️ Si tienes dudas puedes comentarlas por el grupo! La comunidad y staff te ayudarán en el proceso ⚰️</b>`;
 
 export const COMMANDS_TEXT = `
 Lista de comandos disponibles 🕹️
 `;
 
 export const WELCOME_TEXT = `
+    
+¡Si tienes dudas o preguntas puedes hacerlas mediante el grupo! La comunidad y Staff te ayudarán!
 
-Bienvenido a Rick Community 🚀
+Staff Oficial:
 
-Recuerda pedir a un Administrador/Moderador las reglas de la comunidad.
- 
-💠@Summerrcn 
-💠@Jhefang
-💠@Bird_person10
+- @Summerrcn
+- @Rickcoinsupport
+
+⚜️ El Staff nunca te hablará primero por privado, protege tus criptomonedas ⚜️
 `;
 
 export const NO_COMMAND_PERMISSION_TEXT = `
 ⚠️ Solos los administradores pueden ejecutar comandos en este chat. ⚠️
 
-por favor no lo intentes de nuevo, de lo contrario podrias ser banneado del chat`;
+por favor no lo intentes de nuevo, de lo contrario podrias ser baneado del chat`;
 
-export const AUTOMATIC_MESSAGE_1 = `
-❗️RICK INFO❗️
- 
-Al manejar cryptos se debe tener responsabilidad y ser muy precavidos.
- 
-🔒NADIE del equipo te escribirá primero. 
-🔒NADIE del equipo te pedirá que ingreses a links sospechosos. 
-🔒NO LE ENVÍES A NADIE TU FRASE SEMILLA.  
-🔒NO LE ENVÍES A NADIE TUS TOKEN AUNQUE SEA O SE HAGA PASAR POR PARTE DEL EQUIPO.  
- 
-Es responsabilidad de cada inversor manejar sus Wallet, no nos hacemos responsables ya que se ha reiterado muchas veces esta información. 
- 
-Si alguien te escribe haciéndose pasar por el equipo o bien un miembro pidiendo tus tokens, repórtalo inmediatamente a:  
- 
-⚜️@Summerrcn
-⚜️@Jhefang
-⚜️@Bird_person10
-`;
+export const AUTOMATIC_MESSAGE_1 = `<b>💀 PROTEGE TUS CRIPTOMONEDAS 💀
 
-export const AUTOMATIC_MESSAGE_2 = `
-❗️RICK INFO❗️
- 
-Pueden encontrar toda la información relacionada al proyecto, links entre otros detalles en el Website oficial!
+Los usuarios maliciosos están por todos lados, y para estar protegido ante estos actores lee esta sencilla guía:
 
-https://rickcrypto.com
-`;
+🎃 El staff de Rickcoin nunca te hablará por privado primero! Si esto sucede, reporta está situación de inmediato a los mods o administradores 
 
-export const CREATE_TO_EARN_TEXT = `
-<b>RICKCOIN PRESENT: “CREATE TO EARN”⚜️</b>
+🎃 Nunca entres a enlaces externos sospechosos o conectes tu wallet a estos sitios, podrías perder tus activos!
 
-<i>Due to the success of the first rewards system implemented by Rickcoin, we’ve decided to make it official and integrate "Create to Earn" into our ecosystem!
+🎃 Si alguien por privado te ofrece ganancias rápidas, y te pide que deposites, reporta esta situación al staff! Podría ser estafa 
 
-Rickcoin is a pioneer in introducing "Create to Earn," and we’re the first to implement this kind of reward mechanism!</i>
+🎃 Recuerda siempre anotar tu frase semilla, para respaldar tus criptomonedas. Nunca la compartas con nadie!
 
-<b>What is Create to Earn? 👇</b>
+Para ayuda/dudas o reportar a actores maliciosos, contactar a administradores:
 
-<i>Create content on social media, accumulate views, and earn USDT rewards weekly. It’s that simple!</i>
+- @SummerRCN
+- @Rickcoinsupport
 
-<b>How does it work? 👇</b>
+👻 El staff no se hace responsable de posibles pérdidas! Mantén en práctica estas recomendaciones y no tendrás problemas! 👻</b>`;
 
-<i>For example, if you honestly accumulate a total of 100,000 views on TikTok, you could earn over 1,300 USDT in rewards!</i>
+export const AUTOMATIC_MESSAGE_2 = `<b>🎃 Cómo comprar $RICK? 🎃
 
-<u>This system will initially be available on TikTok and X, and later expand to Instagram and YouTube.</u>
+🛸 STEP 1: Descarga la app bitget wallet o Okx wallet 
 
-If you want to join "Create to Earn," visit our website for more info!
+🛸 STEP 2: Crea una cuenta, anota y guarda tu frase semilla. Nunca la compartas con nadie!
 
-Link: https://rickcrypto.com/rewards/
+🛸 STEP 3: Deposita $BNB en tu wallet. Recuerda enviar algo extra de $BNB para el fees 
 
-This system is already up and running. Be honest, create content about Rickcoin, and earn USDT rewards!
+🛸 STEP 4: Pulsa en "SWAP", y selecciona para intercambiar $BNB por $RICK. Si no te aparece el token, agrega el siguiente contrato: 
+<pre>0x7552742DFCCc8D0b13463ec93D259A3D87249a2d</pre>
 
-<b>Good luck to everyone! 🔥</b>
-.
-.
-.
-.
-<b>RICKCOIN PRESENTA: "CREATE TO EARN"⚜️</b>
+🛸 STEP 5: Selecciona el monto que quieras comprar y confirma la transacción. Y listo! Ya tienes tus tokens $RICK en tu wallet
 
-<i>Debido al éxito del primer sistema de recompensas implementado por Rickcoin, hemos decidido hacerlo oficial e integrar "Create to Earn" a nuestro ecosistema!
+⚰️ Si tienes dudas puedes comentarlas por el grupo! La comunidad y staff te ayudarán en el proceso ⚰️</b>`;
 
-Rickcoin es pionero en la creación de "Create to Earn" y somos los primeros en implementar este tipo de mecanismo de recompensa!</i>
+export const CREATE_TO_EARN_TEXT = `<b>🧪 CREATE TO EARN 🧪
 
-<b>¿Qué es Create to Earn? 👇</b>
+Rickcoin es pionero en la creación de "Create to Earn", y somos los primeros en implementar este tipo de mecanismo de recompensa!
 
-<i>Crea contenido en redes sociales, acumula visitas y gana recompensas en USDT semanalmente. ¡Así de simple!</i>
+💀 Qué es Create to Earn? 
 
-<b>¿Cómo funciona? 👇</b>
+- "Create to Earn", en un sistema de recompensa que beneficia a los usuarios honestos de la comunidad que crean contenido en redes sociales sobre Rickcoin!
 
-<i>Por ejemplo, si acumulas un total de 100,000 visitas de forma honesta en TikTok, podrás ganar más de 1,300 USDT de recompensa!</i>
+💀 Cómo funciona?
 
-<u>Este mecanismo estará habilitado inicialmente en TikTok y X, y luego se expandirá a Instagram y YouTube.</u>
+- Acumula visitas en redes sociales como Tiktok, y gana recompensas en USDT! Así de sencillo!
 
-Si quieres participar en "Create to Earn," visita nuestra web para más información.
+Dependiendo de la clasificación de tu canal, podrás recibir una X cantidad de USDT cada domingo al acumular visitas de forma honesta!
 
-Link: https://rickcrypto.com/rewards/
+💀 Quiero participar! Cómo lo hago?
 
-Este mecanismo ya está en marcha. Sé honesto, crea contenido sobre Rickcoin y gana recompensas en USDT!
+- Puedes visitar el apartado de Create to Earn en el website oficial! <a href="https://rickcrypto.com/create-to-earn/">Pulsa aquí</a> y podrás ver toda la información en detalle! 
 
-<b>¡Buena suerte a todos! 🔥</b>
-`;
+También puedes consultar a un administrador tus dudas! 
+
+- @SummerRCN
+- @Rickcoinsupport
+
+🧛🏻‍♂️ Buena suerte a todos los participantes, y hagamos de Rickcoin una gran comunidad! 🧛🏻‍♂️</b>`;
 
 export const BITGET_TEXT = `
 📌¿Como comprar $Rickcoin con Bitget Wallet?

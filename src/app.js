@@ -13,6 +13,7 @@ import {
   COMMANDS_TEXT,
   CREATE_TO_EARN_TEXT,
   HELP_TEXT,
+  HOW_TO_BUY_TEXT,
   RULES_TEXT,
   WELCOME_TEXT,
 } from './constants/messages.js';
@@ -32,6 +33,7 @@ import { addHoursToDate } from './utils/addHoursToDate.js';
 import { isAdmin } from './utils/isAdmin.js';
 // import { validateMessage } from './utils/validateMessage.js';
 import { validateUserName } from './utils/validateUserName.js';
+import figlet from 'figlet';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,7 +45,7 @@ const rulesImagePath = path.resolve(__dirname, './assets/images/rules.jpg');
 const bot = new Telegraf(process.env.TELEGRAF_TOKEN);
 
 // Cache for active automatic messages
-const chatsIdWithActiveAutomaticMessage = [];
+let chatsIdWithActiveAutomaticMessage = [];
 
 // Configure all commands to autocomplete in chat
 await bot.telegram.setMyCommands([
@@ -62,6 +64,10 @@ await bot.telegram.setMyCommands([
   {
     command: COMMANDS.HELP,
     description: 'Información relevante para los usuarios',
+  },
+  {
+    command: COMMANDS.BUY,
+    description: 'Guía para comprar Rick Coin',
   },
   {
     command: COMMANDS.INFO,
@@ -110,11 +116,22 @@ bot.use(Telegraf.admin(session()));
 
 // Chat filter middleware
 bot.use(async (ctx, next) => {
-  // console.log(ctx.text);
+  console.log(
+    '##################################################################'
+  );
+  console.log({ message: ctx.message });
+  console.log(
+    '##################################################################'
+  );
+
   if (!ctx.from || !ctx.chat || !ctx.text) {
     await next();
     return;
   }
+
+  // await ctx.replyWithHTML(
+  //   `<tg-emoji emoji-id="5447644880824181073">🚀</tg-emoji>`
+  // );
 
   const isAdminUser = await isAdmin(ctx.chat.id, ctx.from.id, ctx);
 
@@ -125,10 +142,10 @@ bot.use(async (ctx, next) => {
 
   // const chatId = ctx.chat.id;
   const userId = ctx.from.id;
+  const messageText = ctx.text;
   // const firstName = ctx.from.first_name;
   // const userName = ctx.from.username;
   // const displayName = userName || firstName;
-  const messageText = ctx.text;
 
   if (!messageText || !userId) {
     await next();
@@ -152,28 +169,28 @@ bot.use(async (ctx, next) => {
 // Listen for new chat members
 bot.on(message('new_chat_members'), async (ctx) => {
   const chatId = ctx.chat.id;
-  const userId = ctx.from.id;
-  const firstName = ctx.from.first_name;
-  const userName = ctx.from.username;
-  const displayName = userName || firstName;
+  const newMembers = ctx.message.new_chat_members;
 
-  // avoid reply when new bot join chat
-  if (ctx.from.is_bot) return;
+  for (const newMember of newMembers) {
+    if (newMember.is_bot) return;
 
-  const isValidFirstName = validateUserName(firstName);
-  const isValidDisplayName = validateUserName(displayName);
+    const displayName = newMember.username || newMember.first_name;
+    const isValidFirstName = validateUserName(newMember.first_name);
 
-  if (!isValidFirstName || !isValidDisplayName) {
-    saveBannedUser(ctx.from);
-    await bot.telegram.banChatMember(chatId, userId);
-    await ctx.reply(
-      `El nuevo usuario @${displayName} ha sido expulsado automaticamente porque se identificó como un bot`
+    if (!isValidFirstName) {
+      saveBannedUser(newMember.id);
+      await bot.telegram.banChatMember(chatId, newMember.id);
+      await ctx.reply(
+        `El nuevo usuario @${displayName} ha sido expulsado automaticamente porque se identificó como un bot`
+      );
+
+      return;
+    }
+
+    await ctx.replyWithHTML(
+      `<b>🛸 ¡Bienvenido ${displayName} a la comunidad Rickcoin! 🛸 ${WELCOME_TEXT}</b>`
     );
-
-    return;
   }
-
-  await ctx.reply(`Welcome🎉 @${displayName}! ${WELCOME_TEXT}`);
 });
 
 // handle all commands
@@ -240,7 +257,7 @@ bot.command(
             ],
             [
               {
-                text: 'Grafica 📊',
+                text: 'Gráfico 📊',
                 url: 'https://www.dextools.io/app/en/bnb/pair-explorer/0xa2bd7c1b03a5de5f96e6152d62ed94d8c14d96f9?t=1710249999275',
               },
             ],
@@ -250,12 +267,12 @@ bot.command(
                 url: 'https://bscscan.com/address/0x7552742DFCCc8D0b13463ec93D259A3D87249a2d#code',
               },
               {
-                text: 'Auditoria 🔍',
+                text: 'Auditoría 🔍',
                 url: 'https://gopluslabs.io/token-security/56/0x7552742dfccc8d0b13463ec93d259a3d87249a2d',
               },
             ],
             [
-              { text: 'Sitio Oficial 🌐', url: 'https://rickcrypto.com/' },
+              { text: 'Website 🌐', url: 'https://rickcrypto.com/' },
               { text: 'Discord 💬', url: 'https://discord.gg/SN32M7Ye4b' },
             ],
             [
@@ -283,6 +300,18 @@ bot.command(
         source: helpImagePath,
       },
       { caption: HELP_TEXT, parse_mode: 'HTML' }
+    );
+  })
+);
+
+bot.command(
+  COMMANDS.BUY,
+  Telegraf.admin(async (ctx) => {
+    await ctx.replyWithPhoto(
+      {
+        source: helpImagePath,
+      },
+      { caption: HOW_TO_BUY_TEXT, parse_mode: 'HTML' }
     );
   })
 );
@@ -506,12 +535,19 @@ bot.command(
       (id) => chatId === id
     );
 
+    const cronJobs = cron.getTasks();
+
     if (isCurrentlyActive) {
-      await ctx.reply(`Los mensajes automaticos ya se encuentran activados`);
+      cronJobs.forEach((task) => {
+        task.stop();
+        chatsIdWithActiveAutomaticMessage =
+          chatsIdWithActiveAutomaticMessage.filter((id) => id !== chatId);
+      });
+
+      await ctx.reply(`Se desactivaron los mensajes automaticos`);
+
       return;
     }
-
-    chatsIdWithActiveAutomaticMessage.push(chatId);
 
     const options = {
       hour: 'numeric',
@@ -542,7 +578,10 @@ bot.command(
           { caption: info, parse_mode: 'HTML' }
         );
       },
-      { runOnInit: true }
+      {
+        scheduled: true,
+        runOnInit: true,
+      }
     );
 
     // Automatic message 1
@@ -561,7 +600,10 @@ bot.command(
           parse_mode: 'html',
         });
       },
-      { runOnInit: true }
+      {
+        scheduled: true,
+        runOnInit: true,
+      }
     );
 
     // Automatic message 2
@@ -579,13 +621,36 @@ bot.command(
           parse_mode: 'html',
         });
       },
-      { runOnInit: true }
+      {
+        scheduled: true,
+        runOnInit: true,
+      }
     );
+
+    chatsIdWithActiveAutomaticMessage.push(chatId);
   })
 );
 
 // Init the bot
-bot.launch(() => console.log('Rick Coin BOT ha iniciado correctamente 🚀'));
+bot.launch(() => {
+  console.log(
+    '##################################################################'
+  );
+  console.log(
+    figlet.textSync('Rick Coin BOT', {
+      font: 'Big',
+      horizontalLayout: 'controlled smushing',
+      verticalLayout: 'controlled smushing',
+      width: 160,
+      whitespaceBreak: false,
+    })
+  );
+  console.log('\t\t\tBY: ERICK LUGO');
+  console.log(
+    '##################################################################'
+  );
+  console.log('\nCURRENT STATUS: RUNNING ✅\n');
+});
 
 // Catch any error from telegram
 bot.catch((e) => {
