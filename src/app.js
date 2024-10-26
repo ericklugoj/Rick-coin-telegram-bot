@@ -216,12 +216,13 @@ bot.command(
 bot.command(
   COMMANDS.RULES,
   Telegraf.admin(async (ctx) => {
-    await ctx.replyWithPhoto(
-      {
-        source: rulesImagePath,
-      },
-      { caption: RULES_TEXT, parse_mode: 'HTML' }
-    );
+    // await ctx.replyWithPhoto(
+    //   {
+    //     source: rulesImagePath,
+    //   },
+    //   { caption: RULES_TEXT, parse_mode: 'HTML' }
+    // );
+    await ctx.replyWithHTML(RULES_TEXT);
   })
 );
 
@@ -295,24 +296,28 @@ bot.command(
 bot.command(
   COMMANDS.HELP,
   Telegraf.admin(async (ctx) => {
-    await ctx.replyWithPhoto(
-      {
-        source: helpImagePath,
-      },
-      { caption: HELP_TEXT, parse_mode: 'HTML' }
-    );
+    // await ctx.replyWithPhoto(
+    //   {
+    //     source: helpImagePath,
+    //   },
+    //   { caption: HELP_TEXT, parse_mode: 'HTML' }
+    // );
+
+    await ctx.replyWithHTML(HELP_TEXT);
   })
 );
 
 bot.command(
   COMMANDS.BUY,
   Telegraf.admin(async (ctx) => {
-    await ctx.replyWithPhoto(
-      {
-        source: helpImagePath,
-      },
-      { caption: HOW_TO_BUY_TEXT, parse_mode: 'HTML' }
-    );
+    // await ctx.replyWithPhoto(
+    //   {
+    //     source: helpImagePath,
+    //   },
+    //   { caption: HOW_TO_BUY_TEXT, parse_mode: 'HTML' }
+    // );
+
+    await ctx.replyWithHTML(HOW_TO_BUY_TEXT);
   })
 );
 
